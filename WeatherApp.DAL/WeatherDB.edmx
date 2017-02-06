@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WeatherContext.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=&quot;C:\Users\Ivan\Documents\Visual Studio 2015\Projects\WeatherApp\weather.db&quot;" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="2147483647" Nullable="false" />
+          <Property Name="CountryCode" Type="varchar" MaxLength="2147483647" />
+          <Property Name="Latitude" Type="real" />
+          <Property Name="Longitude" Type="real" />
+          <Property Name="LastWeatherUpdate" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="integer" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="2147483647" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Weathers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConditionId" Type="int" Nullable="false" />
+          <Property Name="GeneralDescription" Type="varchar" MaxLength="2147483647" />
+          <Property Name="Description" Type="varchar" MaxLength="2147483647" />
+          <Property Name="WeatherIconId" Type="varchar" MaxLength="2147483647" />
+          <Property Name="Temperature" Type="real" Nullable="false" />
+          <Property Name="Pressure" Type="real" Nullable="false" />
+          <Property Name="Humidity" Type="real" Nullable="false" />
+          <Property Name="MinTemp" Type="real" Nullable="false" />
+          <Property Name="MaxTemp" Type="real" Nullable="false" />
+          <Property Name="SeaLevelPressure" Type="real" Nullable="false" />
+          <Property Name="GroundLevelPressure" Type="real" Nullable="false" />
+          <Property Name="WindSpeed" Type="real" Nullable="false" />
+          <Property Name="WindDegrees" Type="varchar" MaxLength="2147483647" />
+          <Property Name="Cloudiness" Type="real" Nullable="false" />
+          <Property Name="CalculationTime" Type="datetime" Nullable="false" />
+          <Property Name="Sunrise" Type="datetime" Nullable="false" />
+          <Property Name="Sunset" Type="datetime" Nullable="false" />
+          <Property Name="CityId" Type="integer" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Cities_0_0">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Cities" Type="Self.Cities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cities">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Weathers_0_0">
+          <End Role="Cities" Type="Self.Cities" Multiplicity="1" />
+          <End Role="Weathers" Type="Self.Weathers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Weathers">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WeatherContextStoreContainer">
+          <EntitySet Name="Cities" EntityType="Self.Cities" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" store:Type="Tables" />
+          <EntitySet Name="Weathers" EntityType="Self.Weathers" store:Type="Tables" />
+          <AssociationSet Name="FK_Cities_0_0" Association="Self.FK_Cities_0_0">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Cities" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Weathers_0_0" Association="Self.FK_Weathers_0_0">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Weathers" EntitySet="Weathers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WeatherContext" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CountryCode" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="false" />
+          <Property Name="Latitude" Type="Double" />
+          <Property Name="Longitude" Type="Double" />
+          <Property Name="LastWeatherUpdate" Type="DateTime" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Cities_0_0" FromRole="Cities" ToRole="Users" />
+          <NavigationProperty Name="Weathers" Relationship="Self.FK_Weathers_0_0" FromRole="Cities" ToRole="Weathers" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cities" Relationship="Self.FK_Cities_0_0" FromRole="Users" ToRole="Cities" />
+        </EntityType>
+        <EntityType Name="Weather">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConditionId" Type="Int32" Nullable="false" />
+          <Property Name="GeneralDescription" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="false" />
+          <Property Name="WeatherIconId" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" Nullable="false" />
+          <Property Name="Pressure" Type="Double" Nullable="false" />
+          <Property Name="Humidity" Type="Double" Nullable="false" />
+          <Property Name="MinTemp" Type="Double" Nullable="false" />
+          <Property Name="MaxTemp" Type="Double" Nullable="false" />
+          <Property Name="SeaLevelPressure" Type="Double" Nullable="false" />
+          <Property Name="GroundLevelPressure" Type="Double" Nullable="false" />
+          <Property Name="WindSpeed" Type="Double" Nullable="false" />
+          <Property Name="WindDegrees" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="false" />
+          <Property Name="Cloudiness" Type="Double" Nullable="false" />
+          <Property Name="CalculationTime" Type="DateTime" Nullable="false" />
+          <Property Name="Sunrise" Type="DateTime" Nullable="false" />
+          <Property Name="Sunset" Type="DateTime" Nullable="false" />
+          <Property Name="CityId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="City" Relationship="Self.FK_Weathers_0_0" FromRole="Weathers" ToRole="Cities" />
+        </EntityType>
+        <Association Name="FK_Cities_0_0">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Cities" Type="Self.City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cities">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Weathers_0_0">
+          <End Role="Cities" Type="Self.City" Multiplicity="1" />
+          <End Role="Weathers" Type="Self.Weather" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Weathers">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WeatherDB" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cities" EntityType="Self.City" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Weathers" EntityType="Self.Weather" />
+          <AssociationSet Name="FK_Cities_0_0" Association="Self.FK_Cities_0_0">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Cities" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Weathers_0_0" Association="Self.FK_Weathers_0_0">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Weathers" EntitySet="Weathers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WeatherContextStoreContainer" CdmEntityContainer="WeatherDB">
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="WeatherContext.City">
+              <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="LastWeatherUpdate" ColumnName="LastWeatherUpdate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="WeatherContext.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Weathers">
+            <EntityTypeMapping TypeName="WeatherContext.Weather">
+              <MappingFragment StoreEntitySet="Weathers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ConditionId" ColumnName="ConditionId" />
+                <ScalarProperty Name="GeneralDescription" ColumnName="GeneralDescription" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="WeatherIconId" ColumnName="WeatherIconId" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="MinTemp" ColumnName="MinTemp" />
+                <ScalarProperty Name="MaxTemp" ColumnName="MaxTemp" />
+                <ScalarProperty Name="SeaLevelPressure" ColumnName="SeaLevelPressure" />
+                <ScalarProperty Name="GroundLevelPressure" ColumnName="GroundLevelPressure" />
+                <ScalarProperty Name="WindSpeed" ColumnName="WindSpeed" />
+                <ScalarProperty Name="WindDegrees" ColumnName="WindDegrees" />
+                <ScalarProperty Name="Cloudiness" ColumnName="Cloudiness" />
+                <ScalarProperty Name="CalculationTime" ColumnName="CalculationTime" />
+                <ScalarProperty Name="Sunrise" ColumnName="Sunrise" />
+                <ScalarProperty Name="Sunset" ColumnName="Sunset" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
