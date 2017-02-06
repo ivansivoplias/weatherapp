@@ -9,11 +9,13 @@
 
 namespace WeatherApp.DAL
 {
+    using Infrastructure.DAL;
+    using Interfaces;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
-    public partial class WeatherDB : DbContext
+
+    public partial class WeatherDB : DbContext, IWeatherContext
     {
         public WeatherDB()
             : base("name=WeatherDB")
@@ -24,7 +26,42 @@ namespace WeatherApp.DAL
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
+        IDbSet<TEntity> IWeatherContext.Set<TEntity>()
+        {
+            return Set<TEntity>();
+        }
+
+        DbEntityEntry<TEntity> IWeatherContext.Entry<TEntity>(TEntity entity)
+        {
+            return Entry<TEntity>(entity);
+        }
+
+        void IWeatherContext.SetModified<TEntity>(TEntity entity)
+        {
+            Entry<TEntity>(entity).State = EntityState.Modified;
+        }
+
+        void IWeatherContext.SetUnchanged<TEntity>(TEntity entity)
+        {
+            Entry<TEntity>(entity).State = EntityState.Unchanged;
+        }
+
+        void IWeatherContext.SetDeleted<TEntity>(TEntity entity)
+        {
+            Entry<TEntity>(entity).State = EntityState.Deleted;
+        }
+
+        void IWeatherContext.SetAdded<TEntity>(TEntity entity)
+        {
+            Entry<TEntity>(entity).State = EntityState.Added;
+        }
+
+        void IWeatherContext.SaveChanges()
+        {
+            SaveChanges();
+        }
+
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Weather> Weathers { get; set; }

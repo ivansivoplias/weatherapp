@@ -9,10 +9,11 @@
 
 namespace WeatherApp.DAL
 {
+    using Infrastructure.DAL;
     using System;
     using System.Collections.Generic;
-    
-    public partial class Weather
+
+    public partial class Weather : IEntity
     {
         public long Id { get; set; }
         public int ConditionId { get; set; }

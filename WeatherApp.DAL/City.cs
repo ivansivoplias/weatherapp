@@ -9,10 +9,11 @@
 
 namespace WeatherApp.DAL
 {
+    using Infrastructure.DAL;
     using System;
     using System.Collections.Generic;
-    
-    public partial class City
+
+    public partial class City : IEntity
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public City()
